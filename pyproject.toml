@@ -3,11 +3,13 @@ name = "zipsolver"
 version = "0.1.0"
 description = "Zip puzzle solver"
 authors = [
-    {name = "Daniel Banks",email = "danielnbanks@gmail.com"}
+    {name = "Daniel Banks"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dependencies = [
+    "black (>=26.5.1,<27.0.0)",
+    "ruff (>=0.16.8,<0.17.0)"
 ]
 
 
