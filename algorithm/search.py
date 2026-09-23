@@ -3,8 +3,6 @@ from algorithm.puzzle import Puzzle
 
 STARTING_CHECKPOINT = 1
 
-
-# TODO: Add optimiastion such like weights and rejection
 class Search:
     """A search class that implements a DFS search algorithm.
 
@@ -47,6 +45,52 @@ class Search:
             if checkpoint < self.next_checkpoint:
                 self.next_checkpoint -= 1
 
+    def _get_valid_neighbours(self, current_cell: int) -> list[int]:
+        return [
+            n for n in self.puzzle_graph[current_cell]
+            if n not in self.visited
+               and (n not in self.puzzle.checkpoints
+                    or self.puzzle.checkpoints[n] == self.next_checkpoint)
+        ]
+
+    def _would_create_deadend(self, entering_cell: int) -> bool:
+        for neighbour in self.puzzle_graph[entering_cell]:
+            if neighbour in self.visited:
+                continue
+            remaining_exits = sum(
+                1 for nn in self.puzzle_graph[neighbour]
+                if nn not in self.visited and nn != entering_cell
+            )
+            if remaining_exits == 0 and len(self.path) + 2 != self.puzzle.size:
+                return True
+        return False
+
+    def _order_neighbours(self, neighbours: list[int]) -> tuple[list[int], bool]:
+        """Single pass: drops deadend candidates, detects a forced move or a
+        contradiction, and orders the rest by remaining degree (Warnsdorff).
+
+        Returns (ordered_candidates, is_contradiction).
+        """
+        scored = []
+        forced = []
+
+        for n in neighbours:
+            if self._would_create_deadend(n):
+                continue
+
+            degree = sum(1 for nn in self.puzzle_graph[n] if nn not in self.visited)
+            scored.append((degree, n))
+            if degree <= 1:
+                forced.append(n)
+
+        if len(forced) > 1:
+            return [], True
+        if len(forced) == 1:
+            return forced, False
+
+        scored.sort(key=lambda pair: pair[0])
+        return [n for _, n in scored], False
+
     def find_path(self) -> list[int] | None:
         """Finds a path through the puzzle and connects all checkpoints.
 
@@ -70,13 +114,19 @@ class Search:
             if self._is_solved():
                 return True
 
-            for neighbour in self.puzzle_graph[cell]:
-                if neighbour not in self.visited and dfs(neighbour):
+            neighbours = self._get_valid_neighbours(cell)
+            ordered, contradiction = self._order_neighbours(neighbours)
+
+            if contradiction:
+                self._backtrack(cell)
+                return False
+
+            for neighbour in ordered:
+                if dfs(neighbour):
                     return True
 
             self._backtrack(cell)
             return False
-
         self._visit_starting_cell()
 
         for neighbour in self.puzzle_graph[self.puzzle.starting_cell]:
