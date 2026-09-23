@@ -24,3 +24,7 @@ class Puzzle:
     @property
     def size(self) -> int:
         return self.width * self.height
+
+    @property
+    def starting_cell(self) -> int:
+        return next(iter(self.checkpoints))

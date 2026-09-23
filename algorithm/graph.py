@@ -1,4 +1,3 @@
-
 from algorithm.puzzle import Puzzle, Wall
 
 
@@ -30,4 +29,15 @@ def build_graph(puzzle: Puzzle) -> dict[int, list[int]]:
     return graph
 
 
-# def solve():
+def result_to_string(puzzle: Puzzle, result: list[int]) -> str:
+    """Converts the puzzle, and it's result into a more human-readable format."""
+    grid = [[" " for _ in range(puzzle.width)] for _ in range(puzzle.height)]
+
+    for cell in result:
+        x = cell % puzzle.width
+        y = cell // puzzle.width
+        grid[y][x] = (
+            str(puzzle.checkpoints[cell]) if cell in puzzle.checkpoints else "#"
+        )
+
+    return "\n".join([" ".join(row) for row in grid])
