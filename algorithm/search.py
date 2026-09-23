@@ -3,6 +3,7 @@ from algorithm.puzzle import Puzzle
 
 STARTING_CHECKPOINT = 1
 
+
 # TODO: Add optimiastion such like weights and rejection
 class Search:
     """A search class that implements a DFS search algorithm.
@@ -30,8 +31,11 @@ class Search:
         self.path.append(self.puzzle.starting_cell)
         self.next_checkpoint += 1
 
-    def _is_at_last_checkpoint(self) -> bool:
+    def _all_checkpoints_visited(self) -> bool:
         return self.next_checkpoint > len(self.puzzle.checkpoints)
+
+    def _is_solved(self) -> bool:
+        return self._all_checkpoints_visited() and len(self.path) == self.puzzle.size
 
     def _backtrack(self, cell) -> None:
         self.visited.remove(cell)
@@ -59,11 +63,12 @@ class Search:
             if cell in self.puzzle.checkpoints:
                 if self.puzzle.checkpoints[cell] == self.next_checkpoint:
                     self.next_checkpoint += 1
-                    if self._is_at_last_checkpoint():
-                        return True
                 else:
                     self._backtrack(cell)
                     return False
+
+            if self._is_solved():
+                return True
 
             for neighbour in self.puzzle_graph[cell]:
                 if neighbour not in self.visited and dfs(neighbour):
