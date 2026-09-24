@@ -3,6 +3,7 @@ from algorithm.puzzle import Puzzle
 
 STARTING_CHECKPOINT = 1
 
+
 class Search:
     """A search class that implements a DFS search algorithm.
 
@@ -47,10 +48,13 @@ class Search:
 
     def _get_valid_neighbours(self, current_cell: int) -> list[int]:
         return [
-            n for n in self.puzzle_graph[current_cell]
+            n
+            for n in self.puzzle_graph[current_cell]
             if n not in self.visited
-               and (n not in self.puzzle.checkpoints
-                    or self.puzzle.checkpoints[n] == self.next_checkpoint)
+            and (
+                n not in self.puzzle.checkpoints
+                or self.puzzle.checkpoints[n] == self.next_checkpoint
+            )
         ]
 
     def _would_create_deadend(self, entering_cell: int) -> bool:
@@ -58,7 +62,8 @@ class Search:
             if neighbour in self.visited:
                 continue
             remaining_exits = sum(
-                1 for nn in self.puzzle_graph[neighbour]
+                1
+                for nn in self.puzzle_graph[neighbour]
                 if nn not in self.visited and nn != entering_cell
             )
             if remaining_exits == 0 and len(self.path) + 2 != self.puzzle.size:
@@ -127,6 +132,7 @@ class Search:
 
             self._backtrack(cell)
             return False
+
         self._visit_starting_cell()
 
         for neighbour in self.puzzle_graph[self.puzzle.starting_cell]:

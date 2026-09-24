@@ -27,4 +27,7 @@ class Puzzle:
 
     @property
     def starting_cell(self) -> int:
-        return next(iter(self.checkpoints))
+        for cell, number in self.checkpoints.items():
+            if number == 1:
+                return cell
+        raise ValueError("No checkpoint numbered 1 found in puzzle")

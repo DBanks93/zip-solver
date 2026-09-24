@@ -7,23 +7,23 @@ def check_wall(puzzle: Puzzle, pos_1: tuple[int, int], pos_2: tuple[int, int]) -
 
 
 def build_graph(puzzle: Puzzle) -> dict[int, list[int]]:
-    """Builds an adjency list to represent the puzzle as graph."""
+    """Builds an adjacency list to represent the puzzle as a graph."""
     graph: dict[int, list[int]] = {}
 
     for cell in range(puzzle.size):
-        x = cell % puzzle.width
-        y = cell // puzzle.width
+        row = cell // puzzle.width
+        col = cell % puzzle.width
         neighbours = []
 
-        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # (drow, dcol)
 
-        for dx, dy in directions:
-            nx = x + dx
-            ny = y + dy
-            if 0 <= nx < puzzle.width and 0 <= ny < puzzle.height:
-                neighbour = ny * puzzle.width + nx
+        for drow, dcol in directions:
+            nrow = row + drow
+            ncol = col + dcol
+            if 0 <= nrow < puzzle.height and 0 <= ncol < puzzle.width:
+                neighbour = nrow * puzzle.width + ncol
 
-                if not check_wall(puzzle, (x, y), (nx, ny)):
+                if not check_wall(puzzle, (row, col), (nrow, ncol)):
                     neighbours.append(neighbour)
         graph[cell] = neighbours
     return graph
