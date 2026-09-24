@@ -10,6 +10,19 @@ I'm doing this to keep my Python skills up to scratch.
 > 
 > Please do not spam, abuse, or use this program for malicious purposes.
 
+## Running the app
+The app was created on Mac so it doesn't support windows.
+To get everything working run:
+```shell
+make install
+```
+
+Then to run the app run:
+```shell
+make run
+```
+
+
 ## Algorithm 
 The 'solver' is essentally a fancy DFS.
 
