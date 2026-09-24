@@ -1,6 +1,6 @@
 import math
 
-from algorithm.puzzle import Puzzle, Wall
+from zipsolver.algorithm.puzzle import Puzzle, Wall
 
 
 def _get_board_data(cells) -> list[dict]:

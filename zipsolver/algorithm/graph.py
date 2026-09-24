@@ -1,4 +1,4 @@
-from algorithm.puzzle import Puzzle, Wall
+from zipsolver.algorithm.puzzle import Puzzle, Wall
 
 
 def check_wall(puzzle: Puzzle, pos_1: tuple[int, int], pos_2: tuple[int, int]) -> bool:

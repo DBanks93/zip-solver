@@ -1,5 +1,5 @@
-from algorithm.graph import build_graph
-from algorithm.puzzle import Puzzle
+from zipsolver.algorithm.graph import build_graph
+from zipsolver.algorithm.puzzle import Puzzle
 
 STARTING_CHECKPOINT = 1
 

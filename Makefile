@@ -10,5 +10,5 @@ run:
 	poetry run python run.py
 
 install:
-#	poetry install
+	poetry install
 	poetry run playwright install chromium

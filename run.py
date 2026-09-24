@@ -1,8 +1,8 @@
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
-from algorithm.search import Search
-from screen_interactive.web_interactor import draw_path, scrape_puzzle
+from zipsolver.algorithm.search import Search
+from zipsolver.screen_interactive.web_interactor import draw_path, scrape_puzzle
 
 ZIP_PATH = "https://www.linkedin.com/games/zip/"
 
