@@ -3,6 +3,13 @@
 This project contains solvers for [LinkedIn puzzles](https://www.linkedin.com/games).
 
 They aren't meant to be the fastest possible (Otherwise I'd use C, or rust), I'm doing this to keep my Python skills up to scratch.
+This project has been made for educational purposes.
+
+> [!NOTE]
+> This program may be considered cheating, so use it at your own discretion.
+> The solver runs using Chrome for Testing, meaning you won't be logged into LinkedIn and your results won't be saved to your account.
+> 
+> Please do not spam, abuse, or use this program for malicious purposes.
 
 ## Current solvers:
 - [Zip](linkedin_solvers/zipsolver/README.md)
