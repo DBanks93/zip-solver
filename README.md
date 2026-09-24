@@ -11,7 +11,21 @@ I'm doing this to keep my Python skills up to scratch.
 > Please do not spam, abuse, or use this program for malicious purposes.
 
 ## Running the app
-The app was created on Mac so it doesn't support windows.
+### Simple
+> Requirements: Make sure you have Python 3.13 installed locally
+For macOS/Linux run:
+```shell
+./run.sh
+```
+
+For windows (ew) run:
+```
+run.bat
+```
+
+### Advanced(ish)
+The project was built using poetry since I haven't used it before - it's an excuse to move away from pipenv.
+
 To get everything working run:
 ```shell
 make install
@@ -22,6 +36,12 @@ Then to run the app run:
 make run
 ```
 
+If you make changes and want very very basic lint/format it use:
+```shell
+make lint # Runs lint checks
+
+make format # auto applies fixes
+```
 
 ## Algorithm 
 The 'solver' is essentally a fancy DFS.

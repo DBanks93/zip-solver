@@ -7,8 +7,11 @@ format:
 	poetry run ruff check . --fix
 
 run:
-	poetry run python run.py
+	poetry run zipsolver
 
 install:
 	poetry install
 	poetry run playwright install chromium
+
+requirements:
+	poetry export --without-hashes --format=requirements.txt > requirements.txt
