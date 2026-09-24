@@ -1,30 +1,37 @@
-from algorithm.graph import result_to_string
-from algorithm.puzzle import Puzzle
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import sync_playwright
+
 from algorithm.search import Search
+from screen_interactive.web_interactor import draw_path, scrape_puzzle
 
-print("Hello World!")
+ZIP_PATH = "https://www.linkedin.com/games/zip/"
 
-checkpoints = {
-    0: 1,
-    35: 2,
-    25: 3,
-    13: 4,
-    22: 5,
-    20: 6,
-    10: 7,
-    15: 8,
-}
 
-walls = {}
+def main() -> None:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
 
-puzzle = Puzzle(
-    width=6,
-    height=6,
-    checkpoints=checkpoints,
-)
+        page.goto(ZIP_PATH)
+        page.get_by_text("Start game").click()
 
-search = Search(puzzle)
-result = search.find_path()
-print(search.puzzle_graph)
-print(result)
-print(result_to_string(puzzle, result))
+        try:
+            puzzle, board_data = scrape_puzzle(page)
+        except PlaywrightTimeoutError:
+            browser.close()
+            raise
+
+        result = Search(puzzle).find_path()
+
+        if result is None:
+            print("No solution found")
+        else:
+            print("Solution path:", result)
+            draw_path(page, board_data, result)
+
+        input("Press Enter to close the browser...")
+        browser.close()
+
+
+if __name__ == "__main__":
+    main()
