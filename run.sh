@@ -2,6 +2,8 @@
 
 set -e
 
+PUZZLE_TYPE=$1
+
 if [ ! -d ".venv" ]; then
     echo "Setting up the application..."
     python3 -m venv .venv
@@ -15,4 +17,4 @@ if [ ! -d ".venv" ]; then
 fi
 
 echo "Starting application..."
-.venv/bin/python run.py
+.venv/bin/python run.py "$PUZZLE_TYPE"
