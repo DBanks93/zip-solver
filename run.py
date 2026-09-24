@@ -1,30 +1,37 @@
-from algorithm.graph import result_to_string
-from algorithm.puzzle import Puzzle
-from algorithm.search import Search
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+from playwright.sync_api import sync_playwright
 
-print("Hello World!")
+from zipsolver.algorithm.search import Search
+from zipsolver.screen_interactive.web_interactor import draw_path, scrape_puzzle
 
-checkpoints = {
-    0: 1,
-    35: 2,
-    25: 3,
-    13: 4,
-    22: 5,
-    20: 6,
-    10: 7,
-    15: 8,
-}
+ZIP_PATH = "https://www.linkedin.com/games/zip/"
 
-walls = {}
 
-puzzle = Puzzle(
-    width=6,
-    height=6,
-    checkpoints=checkpoints,
-)
+def main() -> None:
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=False)
+        page = browser.new_page()
 
-search = Search(puzzle)
-result = search.find_path()
-print(search.puzzle_graph)
-print(result)
-print(result_to_string(puzzle, result))
+        page.goto(ZIP_PATH)
+        page.get_by_text("Start game").click()
+
+        try:
+            puzzle, board_data = scrape_puzzle(page)
+        except PlaywrightTimeoutError:
+            browser.close()
+            raise
+
+        result = Search(puzzle).find_path()
+
+        if result is None:
+            print("No solution found")
+        else:
+            print("Solution path:", result)
+            draw_path(page, board_data, result)
+
+        input("Press Enter to close the browser...")
+        browser.close()
+
+
+if __name__ == "__main__":
+    main()
