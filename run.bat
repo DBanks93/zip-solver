@@ -1,7 +1,9 @@
 @echo off
 setlocal
 
-if not exist ".venv" (
+set "PUZZLE_TYPE=%~1"
+
+if not exist ".venv\" (
     echo Setting up the application...
     python -m venv .venv
 
@@ -14,6 +16,6 @@ if not exist ".venv" (
 )
 
 echo Starting application...
-.venv\Scripts\python.exe run.py
+.venv\Scripts\python.exe run.py "%PUZZLE_TYPE%"
 
-pause
+endlocal

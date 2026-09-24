@@ -1,7 +1,7 @@
 [project]
-name = "zipsolver"
-version = "0.1.0"
-description = "Zip puzzle solver"
+name = "linkedin_solvers"
+version = "0.2.0"
+description = "Solvers for linkedin games"
 authors = [
     {name = "Daniel Banks"}
 ]
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-zipsolver = "run:main"
+linkedin_solvers = "run:main"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

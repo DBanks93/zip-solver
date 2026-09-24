@@ -6,8 +6,8 @@ format:
 	poetry run black --target-version py313 .
 	poetry run ruff check . --fix
 
-run:
-	poetry run zipsolver
+run_zip:
+	poetry run linkedin_solvers zip
 
 install:
 	poetry install

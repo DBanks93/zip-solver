@@ -1,36 +1,30 @@
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
-from playwright.sync_api import sync_playwright
+import argparse
+from enum import Enum
 
-from zipsolver.algorithm.search import Search
-from zipsolver.screen_interactive.web_interactor import draw_path, scrape_puzzle
+from linkedin_solvers.zipsolver.solver import solve_zip
 
-ZIP_PATH = "https://www.linkedin.com/games/zip/"
 
+class PuzzleTypes(Enum):
+    ZIP = "zip"
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Tool to complete LinkedIn puzzles"
+    )
+
+    parser.add_argument('puzzle', help="Puzzle to solve", type=PuzzleTypes, choices=list(PuzzleTypes))
+    return parser.parse_args()
 
 def main() -> None:
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
+    puzzle_type = parse_args().puzzle
 
-        page.goto(ZIP_PATH)
-        page.get_by_text("Start game").click()
+    match puzzle_type:
+        case PuzzleTypes.ZIP:
+            solve_zip()
+        case _:
+            raise argparse.ArgumentError()
 
-        try:
-            puzzle, board_data = scrape_puzzle(page)
-        except PlaywrightTimeoutError:
-            browser.close()
-            raise
 
-        result = Search(puzzle).find_path()
-
-        if result is None:
-            print("No solution found")
-        else:
-            print("Solution path:", result)
-            draw_path(page, board_data, result)
-
-        input("Press Enter to close the browser...")
-        browser.close()
 
 
 if __name__ == "__main__":
